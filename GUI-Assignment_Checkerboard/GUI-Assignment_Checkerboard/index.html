@@ -75,6 +75,7 @@ $(document).ready(function() {
 	});
 
 	board.prepareNewGame();
+	drawBoard();
 });
 
 // This script extracts parameters from the URL
@@ -96,6 +97,33 @@ $.extend({
   }
 });
 
+function drawBoard() {
+        const canvas = document.createElement('canvas');
+        canvas.id = "checkerboard";
+        canvas.width = 400;
+        canvas.height = 400;
+        document.getElementById('content').appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+        const size = getBoardSize();
+        const squareSize = 400 / size;
+        for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
+                if ((i + j) % 2 === 0) {
+                    ctx.fillStyle = 'white';
+                } else {
+                    ctx.fillStyle = 'black';
+                }
+                ctx.fillRect(j * squareSize, i * squareSize, squareSize, squareSize);
+            }
+        }
+    }
+
+    function getBoardSize() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const sizeParam = urlParams.get('size');
+        return sizeParam ? parseInt(sizeParam) : DEFAULT_BOARD_SIZE;
+    }
 </script>
 
 
